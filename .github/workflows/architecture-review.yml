@@ -55,17 +55,43 @@ jobs:
           # Fetch full history so model can see all commits in PR
           fetch-depth: 0
 
+      - name: Add upstream remote for fork PRs
+        if: github.event_name == 'issue_comment'
+        run: |
+          # When triggered by comment, we might be in a fork's repo
+          # Add the upstream repo as a remote to fetch the correct base branch
+          UPSTREAM_REPO="${{ github.repository }}"
+          CURRENT_REPO="${{ steps.pr.outputs.repository }}"
+
+          if [ "${UPSTREAM_REPO}" != "${CURRENT_REPO}" ]; then
+            echo "📍 Fork detected: ${CURRENT_REPO}"
+            echo "📍 Adding upstream: ${UPSTREAM_REPO}"
+            git remote add upstream https://github.com/${UPSTREAM_REPO}.git
+          else
+            echo "📍 Not a fork, using origin"
+            # Create upstream alias pointing to origin for consistency
+            git remote add upstream https://github.com/${UPSTREAM_REPO}.git
+          fi
+
       - name: Fetch base branch
         run: |
           # Determine base ref (from PR event or comment-triggered PR lookup)
           if [ "${{ github.event_name }}" = "issue_comment" ]; then
             BASE_REF="${{ steps.pr.outputs.base_ref }}"
+            # For comment-triggered runs, fetch from upstream (handles forks correctly)
+            REMOTE="upstream"
           else
             BASE_REF="${{ github.base_ref || 'main' }}"
+            # For PR events, use origin (we're already in the correct repo)
+            REMOTE="origin"
           fi
 
           # Fetch full history of base branch (no --depth limit)
-          git fetch origin ${BASE_REF}
+          echo "📡 Fetching ${BASE_REF} from ${REMOTE}"
+          git fetch ${REMOTE} ${BASE_REF}
+
+          # Store the remote for use in later steps
+          echo "DIFF_REMOTE=${REMOTE}" >> $GITHUB_ENV
 
       - name: Generate diff context
         id: diff
@@ -73,30 +99,35 @@ jobs:
           # Create temp directory for context files
           mkdir -p /tmp/architect-gate
 
-          # Determine base ref
+          # Determine base ref and remote
           if [ "${{ github.event_name }}" = "issue_comment" ]; then
             BASE_REF="${{ steps.pr.outputs.base_ref }}"
           else
             BASE_REF="${{ github.base_ref || 'main' }}"
           fi
 
+          # Use the correct remote (set by previous step, defaults to origin)
+          REMOTE="${DIFF_REMOTE:-origin}"
+
           # Generate unified diff vs base branch (use triple-dot for merge base)
-          git diff --unified=3 origin/${BASE_REF}...HEAD > /tmp/architect-gate/pr.diff
+          echo "📊 Generating diff against ${REMOTE}/${BASE_REF}"
+          git diff --unified=3 ${REMOTE}/${BASE_REF}...HEAD > /tmp/architect-gate/pr.diff
 
           echo "diff_path=/tmp/architect-gate/pr.diff" >> $GITHUB_OUTPUT
           echo "base_ref=${BASE_REF}" >> $GITHUB_OUTPUT
 
           # Count changed files for metrics
-          CHANGED_FILES=$(git diff --name-only origin/${BASE_REF}...HEAD | wc -l)
+          CHANGED_FILES=$(git diff --name-only ${REMOTE}/${BASE_REF}...HEAD | wc -l)
           echo "changed_files=${CHANGED_FILES}" >> $GITHUB_OUTPUT
 
           # Get commit count in PR for context
-          COMMIT_COUNT=$(git rev-list --count origin/${BASE_REF}..HEAD)
+          COMMIT_COUNT=$(git rev-list --count ${REMOTE}/${BASE_REF}..HEAD)
           echo "commit_count=${COMMIT_COUNT}" >> $GITHUB_OUTPUT
 
           # Show diff stats for debugging
           echo "📊 PR Stats:"
-          echo "   Base: origin/${BASE_REF}"
+          echo "   Remote: ${REMOTE}"
+          echo "   Base: ${REMOTE}/${BASE_REF}"
           echo "   Head: HEAD ($(git rev-parse --short HEAD))"
           echo "   Files changed: ${CHANGED_FILES}"
           echo "   Commits: ${COMMIT_COUNT}"
