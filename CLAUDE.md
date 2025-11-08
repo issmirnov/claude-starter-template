@@ -82,7 +82,7 @@ This project has an automated "Senior Architect in CI" that reviews every PR for
 - Runs on every PR automatically
 - Reviews changes against Memory Bank and CLAUDE.md
 - Checks for 10+ categories of anti-patterns
-- Enforces SupplyVeins-specific architectural invariants
+- Enforces Project-specific architectural invariants
 - Posts System Architecture Review (SAR) as PR comment
 - Blocks merge if severity ≥ 3 or blockers present
 
