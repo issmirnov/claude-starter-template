@@ -61,7 +61,7 @@ jobs:
           if [ "${{ github.event_name }}" = "issue_comment" ]; then
             BASE_REF="${{ steps.pr.outputs.base_ref }}"
           else
-            BASE_REF="${{ github.base_ref || 'master' }}"
+            BASE_REF="${{ github.base_ref || 'main' }}"
           fi
 
           # Fetch full history of base branch (no --depth limit)
@@ -77,11 +77,11 @@ jobs:
           if [ "${{ github.event_name }}" = "issue_comment" ]; then
             BASE_REF="${{ steps.pr.outputs.base_ref }}"
           else
-            BASE_REF="${{ github.base_ref || 'master' }}"
+            BASE_REF="${{ github.base_ref || 'main' }}"
           fi
 
           # Generate unified diff vs base branch (use triple-dot for merge base)
-          git diff --unified=3 origin/${BASE_REF}...HEAD > /tmp/architect-gate/pr.diffExpand commentComment on lines R24 to R84ResolvedCode has comments. Press enter to view.
+          git diff --unified=3 origin/${BASE_REF}...HEAD > /tmp/architect-gate/pr.diff
 
           echo "diff_path=/tmp/architect-gate/pr.diff" >> $GITHUB_OUTPUT
           echo "base_ref=${BASE_REF}" >> $GITHUB_OUTPUT
@@ -198,7 +198,7 @@ jobs:
             BASE="${{ steps.pr.outputs.base_ref }}"
           else
             PR_NUM="${{ github.event.pull_request.number }}"
-            BASE="${{ github.base_ref || 'master' }}"
+            BASE="${{ github.base_ref || 'main' }}"
           fi
 
           # Add metadata
