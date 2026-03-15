@@ -1,0 +1,22 @@
+{
+  "name": "vania-skills",
+  "owner": {
+    "name": "Vania",
+    "email": "ivan@smirnovlabs.com"
+  },
+  "metadata": {
+    "description": "Personal Claude Code skills marketplace — presentation tools, project utilities, and more",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "presentation-tools",
+      "description": "End-to-end presentation creation: analyzes codebases, websites, and projects to build polished pitch decks, technical overviews, and status reports",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/presentation-blueprint"
+      ]
+    }
+  ]
+}

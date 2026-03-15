@@ -578,6 +578,48 @@ Memory bank provides:
 
 Code comments explain how specific code works. Memory bank explains why the project exists and how everything fits together.
 
+## Skills Marketplace
+
+This repo also functions as a **Claude Code skills marketplace**. Skills are reusable workflows that guide Claude through complex tasks with expert-level quality.
+
+### Available Skills
+
+| Skill | Description |
+|-------|-------------|
+| **presentation-blueprint** | End-to-end presentation consultant: analyzes codebases/websites/projects, crafts strategic blueprints, and renders polished decks via `document-skills:pptx` |
+
+### Installing Skills on Another Machine
+
+```bash
+# 1. Register this marketplace (one-time)
+claude plugins add-marketplace github:YOUR_USERNAME/claude-starter-template
+
+# 2. Install the presentation-tools plugin
+claude plugins install presentation-tools
+```
+
+### Using Skills
+
+Once installed, skills activate automatically when relevant. For example:
+- Say "build a pitch deck for this project" to trigger `presentation-blueprint`
+- Or invoke directly with `/presentation-blueprint`
+
+### Prerequisites
+
+The `presentation-blueprint` skill requires `document-skills:pptx` for rendering. Install it from the official Anthropic skills:
+
+```bash
+claude plugins install document-skills
+```
+
+### Adding Your Own Skills
+
+1. Create a new directory under `skills/` (e.g., `skills/my-new-skill/`)
+2. Add a `SKILL.md` with YAML frontmatter (`name` and `description`)
+3. Add any supporting reference files
+4. Register the skill path in `.claude-plugin/marketplace.json`
+5. Push to GitHub
+
 ## Contributing
 
 Found a way to improve this template? Contributions welcome!
