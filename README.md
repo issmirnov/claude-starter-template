@@ -2,54 +2,83 @@
 
 A Claude Code **skills marketplace** and **starter template** that bundles reusable AI workflows, a Memory Bank system for persistent project context, custom slash commands, and an automated architecture reviewer -- everything you need to supercharge Claude Code on any project.
 
+## Quick Start: Install Skills
+
+```bash
+# 1. Register this marketplace (one-time)
+/plugin marketplace add smirnov-labs/claude-skills
+
+# 2. Install the presentation-tools plugin
+/plugin install presentation-tools@smirnovlabs-claude-skills
+```
+
+Or from the CLI outside a session:
+
+```bash
+claude plugin marketplace add smirnov-labs/claude-skills
+claude plugin install presentation-tools@smirnovlabs-claude-skills
+```
+
+Once installed, skills activate automatically. Say "build a pitch deck for this project" or invoke directly with `/presentation-blueprint`.
+
+### Available Skills
+
+| Skill | Plugin | Description |
+|-------|--------|-------------|
+| **presentation-blueprint** | `presentation-tools` | End-to-end presentation consultant: analyzes codebases/websites/projects, crafts strategic blueprints, and renders polished decks via `document-skills:pptx` |
+
+### Prerequisites
+
+The `presentation-blueprint` skill requires `document-skills:pptx` for rendering:
+
+```bash
+/plugin install document-skills@anthropic-agent-skills
+```
+
 ## What's in This Repo
 
 | Component | Location | Description |
 |-----------|----------|-------------|
+| **Skills Marketplace** | `.claude-plugin/marketplace.json` + `skills/` | Installable skills that other Claude Code instances can pull from `github:smirnov-labs/claude-skills` |
 | **Memory Bank** | `.claude/memory-bank/` | Structured documentation templates that give Claude full project context across sessions |
 | **Custom Slash Commands** | `.claude/commands/` | `/plan`, `/pr`, `/memory`, `/loop-review` -- ready-to-use workflows |
 | **Architect-Gate** | `.github/claude/` | Automated architecture review that runs on every PR via CI |
-| **Skills Marketplace** | `.claude-plugin/marketplace.json` + `skills/` | Installable skills that other Claude Code instances can pull from `github:smirnov-labs/claude-skills` |
 
 ## Table of Contents
 
-- [Skills Marketplace](#skills-marketplace)
-- [Why This Template?](#why-this-template)
+- [Quick Start: Install Skills](#quick-start-install-skills)
+- [Using as a Project Template](#using-as-a-project-template)
 - [What's Included](#whats-included)
-- [Quick Start](#quick-start)
 - [How It Works](#how-it-works)
 - [Usage Guide](#usage-guide)
 - [Memory Bank Files](#memory-bank-files)
 - [Best Practices](#best-practices)
 - [Advanced Usage](#advanced-usage)
+- [Adding Your Own Skills](#adding-your-own-skills)
 - [Troubleshooting](#troubleshooting)
 - [Contributing](#contributing)
 
-## Why This Template?
+## Using as a Project Template
 
-Claude Code's memory resets completely between sessions. While this ensures privacy and clean starts, it means Claude has no context about your project when starting a new conversation. This template solves that problem by providing:
+Want the full Memory Bank + Architect-Gate + commands for a new project? Clone the repo:
+
+```bash
+git clone https://github.com/smirnov-labs/claude-skills.git my-project
+cd my-project
+rm -rf .git  # Remove template git history
+git init     # Start fresh
+```
+
+Then fill out `.claude/memory-bank/projectbrief.md` with your project details -- this is your foundation. Work through the other template files (`productContext.md`, `systemPatterns.md`, `techContext.md`, `activeContext.md`, `progress.md`) as your project takes shape.
+
+### Why a Memory Bank?
+
+Claude Code's memory resets between sessions. The Memory Bank solves this:
 
 - **Structured Documentation**: Pre-built templates for capturing project context
 - **Automatic Context Loading**: Claude reads your memory bank at every session start
 - **Planning Workflows**: Built-in `/plan` command for structured feature development
 - **Project Intelligence**: System that learns and captures project-specific patterns
-- **Continuity**: Maintain context across unlimited session resets
-
-### The Problem This Solves
-
-Without a memory system:
-- ❌ You re-explain your project every session
-- ❌ Context is lost between conversations
-- ❌ Claude doesn't learn project patterns
-- ❌ Implementation decisions aren't documented
-- ❌ Progress tracking is manual and error-prone
-
-With this template:
-- ✅ Claude has full project context immediately
-- ✅ Knowledge accumulates over time
-- ✅ Patterns and preferences are learned
-- ✅ Decisions are documented with rationale
-- ✅ Progress is tracked systematically
 
 ## What's Included
 
@@ -88,10 +117,9 @@ skills/
 
 ### Key Components
 
-1. **Configuration** (`.claude/claude.md`)
-   - Automatic memory loading via `alwaysApply: true`
-   - Project intelligence journal
-   - Instructions for Claude on how to use the system
+1. **Skills Marketplace** (`.claude-plugin/` + `skills/`)
+   - Installable via `github:smirnov-labs/claude-skills`
+   - Currently ships with the `presentation-blueprint` skill
 
 2. **Slash Commands** (`.claude/commands/`)
    - `/plan` -- structured feature planning with clarifying questions
@@ -109,83 +137,10 @@ skills/
    - Anti-pattern detection and severity scoring
    - Posts a System Architecture Review (SAR) comment
 
-5. **Skills Marketplace** (`.claude-plugin/` + `skills/`)
-   - Installable via `github:smirnov-labs/claude-skills`
-   - Currently ships with the `presentation-blueprint` skill
-
-## Quick Start
-
-### 1. Use This Template
-
-Click "Use this template" on GitHub or clone this repository:
-
-```bash
-git clone https://github.com/smirnov-labs/claude-skills.git my-project
-cd my-project
-rm -rf .git  # Remove template git history
-git init     # Start fresh
-```
-
-### 2. Fill Out Your Project Brief
-
-Start by editing `.claude/memory-bank/projectbrief.md`:
-
-```bash
-# Open in your editor
-code .claude/memory-bank/projectbrief.md
-```
-
-Fill in:
-- Project name and purpose
-- Core goals
-- Scope (in/out of scope)
-- Success criteria
-- Constraints
-- Key stakeholders
-
-**This is your most important file** - everything else builds on it.
-
-### 3. Complete Other Core Files
-
-Work through each template file:
-
-1. **productContext.md** - Why your project exists, who it's for
-2. **systemPatterns.md** - How it's architected, key patterns
-3. **techContext.md** - Tech stack, setup instructions
-4. **activeContext.md** - What you're working on now
-5. **progress.md** - What's done, what's left
-
-Don't worry about perfection - these files evolve with your project.
-
-### 4. Start Using Claude Code
-
-Open Claude Code in your project directory:
-
-```bash
-claude
-```
-
-Claude will automatically read your memory bank and have full context. Try:
-
-```
-What does this project do?
-```
-
-Claude should answer based on your memory bank files!
-
-### 5. Use the Planning Workflow
-
-When starting a new feature:
-
-```
-/plan
-```
-
-Claude will:
-1. Review all memory bank files
-2. Ask 4-6 clarifying questions
-3. Draft a comprehensive plan
-4. Execute systematically with your approval
+5. **Configuration** (`.claude/claude.md`)
+   - Automatic memory loading via `alwaysApply: true`
+   - Project intelligence journal
+   - Instructions for Claude on how to use the system
 
 ## How It Works
 
@@ -338,8 +293,8 @@ This is your most important file for day-to-day work. Update it frequently:
 
 Vague documentation is worse than no documentation:
 
-❌ **Bad**: "Fixed the bug in the auth system"
-✅ **Good**: "Fixed OAuth token refresh race condition in `src/auth/token-manager.ts:156` by adding mutex lock"
+**Bad**: "Fixed the bug in the auth system"
+**Good**: "Fixed OAuth token refresh race condition in `src/auth/token-manager.ts:156` by adding mutex lock"
 
 ### 4. Include File References
 
@@ -355,8 +310,8 @@ This helps Claude (and humans) find the code quickly.
 
 Don't just document what you did - document why:
 
-❌ **Bad**: "Using PostgreSQL"
-✅ **Good**: "Using PostgreSQL because we need ACID transactions for financial data and team has expertise"
+**Bad**: "Using PostgreSQL"
+**Good**: "Using PostgreSQL because we need ACID transactions for financial data and team has expertise"
 
 ### 6. Update Regularly
 
@@ -366,18 +321,6 @@ Don't let memory bank get stale. Update after:
 - Discovering new patterns
 - Changing dependencies
 - Shifting focus
-
-### 7. Review Periodically
-
-Set a reminder to review all memory bank files monthly to ensure accuracy.
-
-### 8. Use the Planning Workflow
-
-For complex features, always use `/plan`:
-- Ensures thorough analysis
-- Clarifies requirements
-- Creates systematic approach
-- Tracks progress automatically
 
 ## Advanced Usage
 
@@ -452,6 +395,14 @@ For team projects:
 3. **Decision History**: `systemPatterns.md` explains why things are built certain ways
 4. **Consistency**: Everyone works from same understanding
 
+## Adding Your Own Skills
+
+1. Create a new directory under `skills/` (e.g., `skills/my-new-skill/`)
+2. Add a `SKILL.md` with YAML frontmatter (`name` and `description`)
+3. Add any supporting reference files (e.g., frameworks, archetypes, analysis guides)
+4. Register the skill path in `.claude-plugin/marketplace.json`
+5. Push to GitHub
+
 ## Troubleshooting
 
 ### Claude Doesn't Have Context
@@ -495,83 +446,6 @@ Then work with Claude to update each file systematically.
 3. Try restarting Claude Code
 4. Use alternative: just say "Let's plan this feature carefully"
 
-## Example Workflows
-
-### Starting a New Project
-
-```bash
-# 1. Clone template
-git clone <this-repo> my-new-project
-cd my-new-project
-
-# 2. Fill out project brief
-code .claude/memory-bank/projectbrief.md
-# (fill in your project details)
-
-# 3. Fill out other core files
-code .claude/memory-bank/productContext.md
-code .claude/memory-bank/techContext.md
-# etc.
-
-# 4. Start Claude Code
-claude
-
-# 5. Verify context
-> "Explain this project to me"
-# Claude should explain based on your memory bank!
-
-# 6. Start building
-> "/plan
->  Let's build the first feature"
-```
-
-### Adding a Major Feature
-
-```bash
-# 1. Open Claude Code
-claude
-
-# 2. Use planning workflow
-> "/plan
->  I want to add payment processing with Stripe"
-
-# Claude asks clarifying questions, you answer
-
-# 3. Review and approve plan
-> "Yes, let's proceed with that plan"
-
-# 4. Claude implements systematically
-
-# 5. Update memory bank
-> "update memory bank"
-
-# Claude updates relevant files with new patterns and progress
-```
-
-### Onboarding to Existing Project
-
-```bash
-# 1. Clone project with memory bank
-git clone <project-repo>
-cd <project>
-
-# 2. Read the memory bank
-cat .claude/memory-bank/projectbrief.md
-cat .claude/memory-bank/productContext.md
-cat .claude/memory-bank/systemPatterns.md
-# etc.
-
-# 3. Start Claude Code
-claude
-
-# 4. Ask questions
-> "Walk me through the authentication flow"
-> "Where is error handling implemented?"
-> "What's our testing strategy?"
-
-# Claude answers based on memory bank - you're up to speed!
-```
-
 ## FAQ
 
 ### Do I need to fill out all memory bank files?
@@ -603,68 +477,9 @@ While designed for Claude Code, the memory bank structure works great for:
 - Project handoffs
 - Future reference
 
-### How is this different from comments in code?
-
-Memory bank provides:
-- High-level context and rationale
-- User perspective and product vision
-- Project evolution and decision history
-- Current status and next steps
-
-Code comments explain how specific code works. Memory bank explains why the project exists and how everything fits together.
-
-## Skills Marketplace
-
-This repo doubles as a **Claude Code skills marketplace** hosted at `github:smirnov-labs/claude-skills`. Skills are reusable workflows that guide Claude through complex, multi-step tasks with expert-level quality.
-
-### Available Skills
-
-| Skill | Plugin | Description |
-|-------|--------|-------------|
-| **presentation-blueprint** | `presentation-tools` | End-to-end presentation consultant: analyzes codebases/websites/projects, crafts strategic blueprints, and renders polished decks via `document-skills:pptx` |
-
-### Installing Skills on Another Machine
-
-```bash
-# 1. Register this marketplace (one-time)
-/plugin marketplace add smirnov-labs/claude-skills
-
-# 2. Install the presentation-tools plugin
-/plugin install presentation-tools@smirnovlabs-claude-skills
-```
-
-Or from the CLI outside a session:
-
-```bash
-claude plugin marketplace add smirnov-labs/claude-skills
-claude plugin install presentation-tools@smirnovlabs-claude-skills
-```
-
-### Using Skills
-
-Once installed, skills activate automatically when relevant. For example:
-- Say "build a pitch deck for this project" to trigger `presentation-blueprint`
-- Or invoke directly with `/presentation-blueprint`
-
-### Prerequisites
-
-The `presentation-blueprint` skill requires `document-skills:pptx` for rendering. Install it from the official Anthropic skills:
-
-```bash
-/plugin install document-skills@anthropic-agent-skills
-```
-
-### Adding Your Own Skills
-
-1. Create a new directory under `skills/` (e.g., `skills/my-new-skill/`)
-2. Add a `SKILL.md` with YAML frontmatter (`name` and `description`)
-3. Add any supporting reference files (e.g., frameworks, archetypes, analysis guides)
-4. Register the skill path in `.claude-plugin/marketplace.json`
-5. Push to GitHub
-
 ## Contributing
 
-Found a way to improve this template? Contributions welcome!
+Found a way to improve this repo? Contributions welcome!
 
 1. Fork the repository
 2. Create a feature branch
@@ -672,11 +487,10 @@ Found a way to improve this template? Contributions welcome!
 4. Submit a pull request
 
 Ideas for contributions:
-- Additional template files for specific use cases
+- New skills
+- Additional memory bank templates
 - More slash commands
 - Documentation improvements
-- Example projects
-- Integration guides
 
 ## License
 
