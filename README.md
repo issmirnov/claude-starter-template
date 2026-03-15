@@ -592,7 +592,7 @@ This repo also functions as a **Claude Code skills marketplace**. Skills are reu
 
 ```bash
 # 1. Register this marketplace (one-time)
-claude plugins add-marketplace github:YOUR_USERNAME/smirnovlabs-claude-skills
+claude plugins add-marketplace github:smirnov-labs/claude-skills
 
 # 2. Install the presentation-tools plugin
 claude plugins install presentation-tools
