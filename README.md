@@ -627,10 +627,17 @@ This repo doubles as a **Claude Code skills marketplace** hosted at `github:smir
 
 ```bash
 # 1. Register this marketplace (one-time)
-claude plugins add-marketplace github:smirnov-labs/claude-skills
+/plugin marketplace add smirnov-labs/claude-skills
 
 # 2. Install the presentation-tools plugin
-claude plugins install presentation-tools
+/plugin install presentation-tools@smirnovlabs-claude-skills
+```
+
+Or from the CLI outside a session:
+
+```bash
+claude plugin marketplace add smirnov-labs/claude-skills
+claude plugin install presentation-tools@smirnovlabs-claude-skills
 ```
 
 ### Using Skills
@@ -644,7 +651,7 @@ Once installed, skills activate automatically when relevant. For example:
 The `presentation-blueprint` skill requires `document-skills:pptx` for rendering. Install it from the official Anthropic skills:
 
 ```bash
-claude plugins install document-skills
+/plugin install document-skills@anthropic-agent-skills
 ```
 
 ### Adding Your Own Skills
