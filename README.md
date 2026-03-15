@@ -673,16 +673,12 @@ Ideas for contributions:
 
 ## License
 
-[Your chosen license - e.g., MIT]
-
-## Credits
-
-This memory bank system is adapted from Cursor's memory bank approach and optimized for Claude Code's architecture, hook system, and workflow patterns.
+MIT License. See [LICENSE](LICENSE) for details.
 
 ---
 
-**Ready to get started?** Read [`.claude/memory-bank/QUICKSTART.md`](.claude/memory-bank/QUICKSTART.md) for step-by-step setup instructions.
+## Smirnov Labs
 
-**Questions?** Open an issue or check the [troubleshooting section](#troubleshooting).
+Built and maintained by [Smirnov Labs](https://smirnovlabs.com/). We help teams build smarter with AI-powered workflows and developer tooling.
 
-**Happy building with Claude Code!** 🚀
+If this repo saved you time or sparked ideas, we'd love to hear from you -- reach out at [smirnovlabs.com](https://smirnovlabs.com/) or open an issue to say hello.
