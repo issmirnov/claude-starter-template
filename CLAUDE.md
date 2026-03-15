@@ -71,6 +71,47 @@ This section grows as patterns and preferences are discovered during work on thi
 - Update frequently to maintain accuracy
 - The Memory Bank is the primary context system for this project
 
+## Skills Marketplace
+
+This repo is a Claude Code skills marketplace hosted at `github:smirnov-labs/claude-skills`.
+
+### Structure
+
+- **`.claude-plugin/marketplace.json`** -- Registry that defines available plugins and their skills. Each plugin entry has a `name`, `description`, `source`, and a list of `skills` paths.
+- **`skills/`** -- Directory containing individual skill definitions. Each skill is a subdirectory with:
+  - `SKILL.md` -- Skill definition with YAML frontmatter (`name`, `description`) and the full skill prompt
+  - Supporting reference files (frameworks, archetypes, analysis guides, etc.)
+
+### Current Skills
+
+| Skill | Plugin | Path |
+|-------|--------|------|
+| `presentation-blueprint` | `presentation-tools` | `skills/presentation-blueprint/` |
+
+### marketplace.json Format
+
+```json
+{
+  "name": "smirnovlabs-claude-skills",
+  "plugins": [
+    {
+      "name": "presentation-tools",
+      "description": "...",
+      "source": "./",
+      "skills": ["./skills/presentation-blueprint"]
+    }
+  ]
+}
+```
+
+### Adding a New Skill
+
+1. Create `skills/<skill-name>/SKILL.md` with YAML frontmatter
+2. Add reference files alongside SKILL.md as needed
+3. Add the skill path to the appropriate plugin in `marketplace.json` (or create a new plugin entry)
+
+---
+
 ## Architect-Gate: Automated Architecture Review
 
 This project has an automated "Senior Architect in CI" that reviews every PR for architectural consistency and anti-patterns.

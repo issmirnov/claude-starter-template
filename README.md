@@ -1,9 +1,19 @@
-# Claude Code Memory Bank Template
+# Smirnov Labs Claude Skills
 
-A comprehensive template repository that implements a Memory Bank system for maintaining project context across Claude Code sessions. This template solves the fundamental challenge of AI memory resets by providing structured documentation that serves as institutional memory for your projects.
+A Claude Code **skills marketplace** and **starter template** that bundles reusable AI workflows, a Memory Bank system for persistent project context, custom slash commands, and an automated architecture reviewer -- everything you need to supercharge Claude Code on any project.
+
+## What's in This Repo
+
+| Component | Location | Description |
+|-----------|----------|-------------|
+| **Memory Bank** | `.claude/memory-bank/` | Structured documentation templates that give Claude full project context across sessions |
+| **Custom Slash Commands** | `.claude/commands/` | `/plan`, `/pr`, `/memory`, `/loop-review` -- ready-to-use workflows |
+| **Architect-Gate** | `.github/claude/` | Automated architecture review that runs on every PR via CI |
+| **Skills Marketplace** | `.claude-plugin/marketplace.json` + `skills/` | Installable skills that other Claude Code instances can pull from `github:smirnov-labs/claude-skills` |
 
 ## Table of Contents
 
+- [Skills Marketplace](#skills-marketplace)
 - [Why This Template?](#why-this-template)
 - [What's Included](#whats-included)
 - [Quick Start](#quick-start)
@@ -43,13 +53,14 @@ With this template:
 
 ## What's Included
 
-This template provides a complete memory bank infrastructure:
-
 ```
 .claude/
 ├── claude.md                    # Main configuration & project intelligence
 ├── commands/
-│   └── plan.md                  # /plan command for structured planning
+│   ├── plan.md                  # /plan — structured feature planning
+│   ├── pr.md                    # /pr — pull request workflow
+│   ├── memory.md                # /memory — memory bank management
+│   └── loop-review.md           # /loop-review — iterative plan refinement
 └── memory-bank/
     ├── QUICKSTART.md            # Quick start guide
     ├── memory-rules.md          # Complete system documentation
@@ -59,6 +70,20 @@ This template provides a complete memory bank infrastructure:
     ├── techContext.md           # Tech stack & setup (template)
     ├── activeContext.md         # Current work focus (template)
     └── progress.md              # Status tracking (template)
+
+.claude-plugin/
+└── marketplace.json             # Skills marketplace registry
+
+.github/claude/
+├── architect-gate.yml           # CI workflow for architecture review
+└── ...                          # Review prompts and configuration
+
+skills/
+└── presentation-blueprint/      # Presentation consultant skill
+    ├── SKILL.md                 # Skill definition
+    ├── narrative-frameworks.md  # Reference: storytelling structures
+    ├── slide-archetypes.md      # Reference: slide design patterns
+    └── source-analysis.md       # Reference: source evaluation guide
 ```
 
 ### Key Components
@@ -68,15 +93,25 @@ This template provides a complete memory bank infrastructure:
    - Project intelligence journal
    - Instructions for Claude on how to use the system
 
-2. **Planning Command** (`.claude/commands/plan.md`)
-   - Structured feature planning workflow
-   - Automatic memory review
-   - Clarifying questions before implementation
+2. **Slash Commands** (`.claude/commands/`)
+   - `/plan` -- structured feature planning with clarifying questions
+   - `/pr` -- pull request creation workflow
+   - `/memory` -- memory bank review and update
+   - `/loop-review` -- iterative plan refinement loop
 
 3. **Memory Bank** (`.claude/memory-bank/`)
    - 6 core template files for project documentation
    - Complete system documentation
    - Quick start guide
+
+4. **Architect-Gate** (`.github/claude/`)
+   - Automated architecture review on every PR
+   - Anti-pattern detection and severity scoring
+   - Posts a System Architecture Review (SAR) comment
+
+5. **Skills Marketplace** (`.claude-plugin/` + `skills/`)
+   - Installable via `github:smirnov-labs/claude-skills`
+   - Currently ships with the `presentation-blueprint` skill
 
 ## Quick Start
 
@@ -85,7 +120,7 @@ This template provides a complete memory bank infrastructure:
 Click "Use this template" on GitHub or clone this repository:
 
 ```bash
-git clone https://github.com/yourusername/claude-code-memory-bank-template.git my-project
+git clone https://github.com/smirnov-labs/claude-skills.git my-project
 cd my-project
 rm -rf .git  # Remove template git history
 git init     # Start fresh
@@ -580,13 +615,13 @@ Code comments explain how specific code works. Memory bank explains why the proj
 
 ## Skills Marketplace
 
-This repo also functions as a **Claude Code skills marketplace**. Skills are reusable workflows that guide Claude through complex tasks with expert-level quality.
+This repo doubles as a **Claude Code skills marketplace** hosted at `github:smirnov-labs/claude-skills`. Skills are reusable workflows that guide Claude through complex, multi-step tasks with expert-level quality.
 
 ### Available Skills
 
-| Skill | Description |
-|-------|-------------|
-| **presentation-blueprint** | End-to-end presentation consultant: analyzes codebases/websites/projects, crafts strategic blueprints, and renders polished decks via `document-skills:pptx` |
+| Skill | Plugin | Description |
+|-------|--------|-------------|
+| **presentation-blueprint** | `presentation-tools` | End-to-end presentation consultant: analyzes codebases/websites/projects, crafts strategic blueprints, and renders polished decks via `document-skills:pptx` |
 
 ### Installing Skills on Another Machine
 
@@ -616,7 +651,7 @@ claude plugins install document-skills
 
 1. Create a new directory under `skills/` (e.g., `skills/my-new-skill/`)
 2. Add a `SKILL.md` with YAML frontmatter (`name` and `description`)
-3. Add any supporting reference files
+3. Add any supporting reference files (e.g., frameworks, archetypes, analysis guides)
 4. Register the skill path in `.claude-plugin/marketplace.json`
 5. Push to GitHub
 
