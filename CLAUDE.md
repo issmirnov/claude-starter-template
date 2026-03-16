@@ -20,6 +20,12 @@ This project uses a Memory Bank system to maintain context across sessions. All 
 6. **activeContext.md** - Current work focus
 7. **progress.md** - Status tracking
 
+## Elegance Demand
+
+For non-trivial changes, pause and ask yourself: is there a more elegant solution? If your plan feels hacky, step back and rebuild it properly. Elegant code is simple, clear, and does not fight the architecture.
+
+If you encounter pre-existing issues in code you're touching, be a good citizen and clean them up too. Leave the codebase better than you found it.
+
 ## Instructions for Claude
 
 ### On Every Session Start:
