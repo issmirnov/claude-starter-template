@@ -93,6 +93,7 @@ This repo is a Claude Code skills marketplace hosted at `github:smirnov-labs/cla
 | Skill | Plugin | Path |
 |-------|--------|------|
 | `presentation-blueprint` | `presentation-tools` | `skills/presentation-blueprint/` |
+| `codex-plan-review` | `plan-utilities` | `skills/codex-plan-review/` |
 
 ### marketplace.json Format
 

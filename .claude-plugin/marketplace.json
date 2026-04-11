@@ -17,6 +17,15 @@
       "skills": [
         "./skills/presentation-blueprint"
       ]
+    },
+    {
+      "name": "plan-utilities",
+      "description": "Tools for iterating on and reviewing implementation plans before execution",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/codex-plan-review"
+      ]
     }
   ]
 }
