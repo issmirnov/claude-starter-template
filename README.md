@@ -8,8 +8,10 @@ A Claude Code **skills marketplace** and **starter template** that bundles reusa
 # 1. Register this marketplace (one-time)
 /plugin marketplace add smirnov-labs/claude-skills
 
-# 2. Install the presentation-tools plugin
+# 2. Install any plugin (pick the ones you want)
 /plugin install presentation-tools@smirnovlabs-claude-skills
+/plugin install plan-utilities@smirnovlabs-claude-skills
+/plugin install git-recon@smirnovlabs-claude-skills
 ```
 
 Or from the CLI outside a session:
@@ -19,13 +21,15 @@ claude plugin marketplace add smirnov-labs/claude-skills
 claude plugin install presentation-tools@smirnovlabs-claude-skills
 ```
 
-Once installed, skills activate automatically. Say "build a pitch deck for this project" or invoke directly with `/presentation-blueprint`.
+Once installed, skills activate automatically based on what you ask. Say "build a pitch deck for this project", "get a second opinion on this plan", or "run a git recon on this repo" — or invoke directly with `/presentation-blueprint`, `/codex-plan-review`, or `/git-recon`.
 
 ### Available Skills
 
-| Skill | Plugin | Description |
-|-------|--------|-------------|
-| **presentation-blueprint** | `presentation-tools` | End-to-end presentation consultant: analyzes codebases/websites/projects, crafts strategic blueprints, and renders polished decks via `document-skills:pptx` |
+| Skill | Plugin | What it does | Trigger phrases |
+|-------|--------|--------------|-----------------|
+| **presentation-blueprint** | `presentation-tools` | End-to-end presentation consultant: analyzes codebases/websites/projects, crafts strategic blueprints, and renders polished decks via `document-skills:pptx` | "build a deck", "create a presentation", "pitch deck for" |
+| **codex-plan-review** | `plan-utilities` | Sends your current plan to Codex 5.4 (high-effort, read-only) for an independent architectural second opinion before you execute | "review plan with codex", "get a second opinion", "iterate on plan" |
+| **git-recon** | `git-recon` | 12-month git-history health check: surfaces high-churn files, bus factor, bug hotspots, velocity trends, and firefighting patterns before you read any code | "git recon", "codebase health check", "where are the landmines" |
 
 ### Prerequisites
 
@@ -34,6 +38,10 @@ The `presentation-blueprint` skill requires `document-skills:pptx` for rendering
 ```bash
 /plugin install document-skills@anthropic-agent-skills
 ```
+
+The `codex-plan-review` skill requires the [Codex CLI](https://github.com/openai/codex) on your `PATH` with a `gpt-5.4-codex` model available.
+
+The `git-recon` skill needs only `git` — runs locally against the repo you're standing in.
 
 ## What's in This Repo
 
@@ -108,18 +116,22 @@ Claude Code's memory resets between sessions. The Memory Bank solves this:
 └── ...                          # Review prompts and configuration
 
 skills/
-└── presentation-blueprint/      # Presentation consultant skill
-    ├── SKILL.md                 # Skill definition
-    ├── narrative-frameworks.md  # Reference: storytelling structures
-    ├── slide-archetypes.md      # Reference: slide design patterns
-    └── source-analysis.md       # Reference: source evaluation guide
+├── presentation-blueprint/      # Presentation consultant skill
+│   ├── SKILL.md                 # Skill definition
+│   ├── narrative-frameworks.md  # Reference: storytelling structures
+│   ├── slide-archetypes.md      # Reference: slide design patterns
+│   └── source-analysis.md       # Reference: source evaluation guide
+├── codex-plan-review/           # Codex second-opinion skill
+│   └── SKILL.md                 # Skill definition
+└── git-recon/                   # Git history health-check skill
+    └── SKILL.md                 # Skill definition
 ```
 
 ### Key Components
 
 1. **Skills Marketplace** (`.claude-plugin/` + `skills/`)
    - Installable via `github:smirnov-labs/claude-skills`
-   - Currently ships with the `presentation-blueprint` skill
+   - Ships with three plugins: `presentation-tools`, `plan-utilities`, and `git-recon`
 
 2. **Slash Commands** (`.claude/commands/`)
    - `/plan` -- structured feature planning with clarifying questions
