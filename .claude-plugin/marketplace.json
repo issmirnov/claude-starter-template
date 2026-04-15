@@ -17,6 +17,15 @@
       "skills": [
         "./skills/presentation-blueprint"
       ]
+    },
+    {
+      "name": "git-recon",
+      "description": "Codebase health check via git history — surfaces high-churn files, bus factor, bug hotspots, velocity trends, and firefighting patterns before you read a line of code",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/git-recon"
+      ]
     }
   ]
 }
