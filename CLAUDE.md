@@ -90,9 +90,11 @@ This repo is a Claude Code skills marketplace hosted at `github:smirnov-labs/cla
 
 ### Current Skills
 
-| Skill | Plugin | Path |
-|-------|--------|------|
-| `presentation-blueprint` | `presentation-tools` | `skills/presentation-blueprint/` |
+| Skill | Plugin | Path | Purpose |
+|-------|--------|------|---------|
+| `presentation-blueprint` | `presentation-tools` | `skills/presentation-blueprint/` | Build pitch/technical/update decks end-to-end (analyze → strategize → outline → style → render) |
+| `codex-plan-review` | `plan-utilities` | `skills/codex-plan-review/` | Send the current plan to Codex 5.4 (high effort, read-only) for an independent architectural review |
+| `git-recon` | `git-recon` | `skills/git-recon/` | 12-month git-history health check — churn, bus factor, bug hotspots, velocity, firefighting |
 
 ### marketplace.json Format
 
@@ -105,6 +107,18 @@ This repo is a Claude Code skills marketplace hosted at `github:smirnov-labs/cla
       "description": "...",
       "source": "./",
       "skills": ["./skills/presentation-blueprint"]
+    },
+    {
+      "name": "plan-utilities",
+      "description": "...",
+      "source": "./",
+      "skills": ["./skills/codex-plan-review"]
+    },
+    {
+      "name": "git-recon",
+      "description": "...",
+      "source": "./",
+      "skills": ["./skills/git-recon"]
     }
   ]
 }

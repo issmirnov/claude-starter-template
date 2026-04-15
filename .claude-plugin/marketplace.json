@@ -19,6 +19,15 @@
       ]
     },
     {
+      "name": "plan-utilities",
+      "description": "Tools for iterating on and reviewing implementation plans before execution",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/codex-plan-review"
+      ]
+    },
+    {
       "name": "git-recon",
       "description": "Codebase health check via git history — surfaces high-churn files, bus factor, bug hotspots, velocity trends, and firefighting patterns before you read a line of code",
       "source": "./",
