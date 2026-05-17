@@ -96,6 +96,18 @@ This repo is a Claude Code skills marketplace hosted at `github:smirnov-labs/cla
 | `codex-plan-review` | `plan-utilities` | `skills/codex-plan-review/` | Send the current plan to Codex 5.4 (high effort, read-only) for an independent architectural review |
 | `git-recon` | `git-recon` | `skills/git-recon/` | 12-month git-history health check — churn, bus factor, bug hotspots, velocity, firefighting |
 
+### Current Commands
+
+Commands live at `.claude/commands/<name>.md` and ship automatically with every plugin in this marketplace (since all plugins use `source: "./"`). Listed under a "plugin" column for discoverability.
+
+| Command | Plugin | Path | Purpose |
+|---------|--------|------|---------|
+| `/pr` | `pr-utilities` | `.claude/commands/pr.md` | Commit changes, push, and create or update a PR |
+| `/pr-fix` | `pr-utilities` | `.claude/commands/pr-fix.md` | Loop on a PR: read CI + SAR + inline reviews (including Codex), auto-commit fixes, repeat until clean |
+| `/plan` | n/a (project-local) | `.claude/commands/plan.md` | Enter planning mode with Memory Bank review |
+| `/loop-review` | n/a (project-local) | `.claude/commands/loop-review.md` | Iteratively refine the current plan through senior-architect review loops |
+| `/memory` | n/a (project-local) | `.claude/commands/memory.md` | Update Memory Bank and compress old data if needed |
+
 ### marketplace.json Format
 
 ```json
